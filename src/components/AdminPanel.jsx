@@ -47,10 +47,19 @@ export default function AdminPanel({
   const [eventTime, setEventTime] = useState("");
   const [eventStatus, setEventStatus] = useState("scheduled");
 
-  // Gallery form states
   const [galleryImage, setGalleryImage] = useState("");
   const [galleryUrl, setGalleryUrl] = useState("");
   const [galleryCaption, setGalleryCaption] = useState("");
+
+  // QR Stand Generator states
+  const [selectedTableForQr, setSelectedTableForQr] = useState("1");
+  const [customQrUrl, setCustomQrUrl] = useState("https://barcode-cafee.vercel.app/");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCustomQrUrl(window.location.origin);
+    }
+  }, [isOpen]);
 
   // Load existing event data when opening tab
   useEffect(() => {
@@ -243,6 +252,7 @@ export default function AdminPanel({
           <button className={`track-tab-btn ${activeTab === "gallery" ? "active" : ""}`} onClick={() => setActiveTab("gallery")}>Vibe Gallery</button>
           <button className={`track-tab-btn ${activeTab === "events" ? "active" : ""}`} onClick={() => setActiveTab("events")}>Event Manager</button>
           <button className={`track-tab-btn ${activeTab === "sales" ? "active" : ""}`} onClick={() => setActiveTab("sales")}>Sales Logs</button>
+          <button className={`track-tab-btn ${activeTab === "qr-codes" ? "active" : ""}`} onClick={() => setActiveTab("qr-codes")}>Table QRs</button>
           <button className={`track-tab-btn ${activeTab === "database" ? "active" : ""}`} onClick={() => setActiveTab("database")}>Database</button>
         </div>
 
@@ -724,6 +734,120 @@ export default function AdminPanel({
                 </div>
               </div>
 
+            </div>
+          )}
+
+          {/* TAB: QR CODES GENERATOR */}
+          {activeTab === "qr-codes" && (
+            <div className="flex-col gap-4" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div style={{ padding: "15px", background: "var(--white-surface)", borderRadius: "12px", border: "1px solid var(--border-color)" }}>
+                <h4 className="font-mono text-sm bold mb-2">Configure Table QR Stand Cards</h4>
+                <p className="text-xs text-muted mb-3">
+                  This generator creates print-ready dining tent cards. When customers scan the QR code with their mobile phone, the website automatically loads the digital menu and registers their specific table number!
+                </p>
+
+                <div className="flex" style={{ display: "flex", gap: "15px", marginBottom: "15px" }}>
+                  <div className="flex-col" style={{ display: "flex", flexDirection: "column", gap: "5px", flex: 1 }}>
+                    <label className="font-mono text-xs bold">Select Table Number</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="50"
+                      value={selectedTableForQr}
+                      onChange={(e) => setSelectedTableForQr(e.target.value)}
+                      style={{ padding: "8px", borderRadius: "6px", border: "1px solid var(--border-color)", background: "white" }}
+                    />
+                  </div>
+
+                  <div className="flex-col" style={{ display: "flex", flexDirection: "column", gap: "5px", flex: 2 }}>
+                    <label className="font-mono text-xs bold">Target URL (Base Domain)</label>
+                    <input
+                      type="text"
+                      value={customQrUrl}
+                      onChange={(e) => setCustomQrUrl(e.target.value)}
+                      placeholder="https://barcode-cafee.vercel.app/"
+                      style={{ padding: "8px", borderRadius: "6px", border: "1px solid var(--border-color)", background: "white" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Printable Stand Preview */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "15px" }}>
+                <h5 className="font-mono text-xs bold text-muted">LIVE CARD PREVIEW (Printable)</h5>
+                
+                <div 
+                  id="printable-tent-card"
+                  style={{
+                    width: "280px",
+                    padding: "30px 20px",
+                    background: "var(--cream-bg)",
+                    border: "3px solid var(--dark-espresso)",
+                    borderRadius: "16px",
+                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "15px",
+                    boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+                    fontFamily: "var(--font-body)"
+                  }}
+                >
+                  <div style={{ fontStyle: "italic", fontSize: "0.85rem", color: "var(--olive-accent)", letterSpacing: "1px", fontWeight: "bold" }}>WELCOME TO</div>
+                  <div style={{ fontFamily: "var(--font-display)", fontWeight: "bold", fontSize: "1.4rem", color: "var(--dark-espresso)", borderBottom: "2px solid var(--border-color)", paddingBottom: "8px", width: "100%", textTransform: "uppercase" }}>
+                    Barcode Cafe
+                  </div>
+                  
+                  <div style={{ fontSize: "0.75rem", color: "#555", fontWeight: "600", lineHeight: "1.3" }}>
+                    Scan QR Code to browse our menu and order directly to your table!
+                  </div>
+
+                  {/* QR Image using Server API */}
+                  <div style={{ padding: "10px", background: "white", borderRadius: "12px", border: "1px solid var(--border-color)" }}>
+                    <img 
+                      src={"https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=" + encodeURIComponent((customQrUrl.endsWith("/") ? customQrUrl : customQrUrl + "/") + "?table=" + selectedTableForQr)}
+                      alt={"Table " + selectedTableForQr + " QR Code"}
+                      style={{ width: "160px", height: "160px", display: "block" }}
+                    />
+                  </div>
+
+                  <div style={{ background: "var(--dark-espresso)", color: "var(--cream-bg)", padding: "6px 20px", borderRadius: "20px", fontFamily: "monospace", fontSize: "0.9rem", fontWeight: "bold", marginTop: "5px" }}>
+                    DINE-IN TABLE #{selectedTableForQr}
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    type="button"
+                    className="track-tab-btn"
+                    style={{ background: "var(--olive-accent)", color: "white", padding: "8px 16px", borderRadius: "8px" }}
+                    onClick={() => {
+                      const printContent = document.getElementById("printable-tent-card").outerHTML;
+                      
+                      // Temporary page for print dialog with centered card
+                      const printWindow = window.open("", "_blank");
+                      printWindow.document.write(
+                        "<html><head><title>Print QR Card - Table " + selectedTableForQr + "</title>" +
+                        "<style>body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: white; }" +
+                        "#printable-tent-card { width: 300px; padding: 40px 30px; border: 4px solid #2d221e !important; border-radius: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; background: #fdfaf2 !important; box-shadow: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }</style></head>" +
+                        "<body>" + printContent + "<script>window.onload = function() { window.print(); window.close(); }</script></body></html>"
+                      );
+                      printWindow.document.close();
+                    }}
+                  >
+                    Print Table Card
+                  </button>
+                  <a
+                    href={"https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=" + encodeURIComponent((customQrUrl.endsWith("/") ? customQrUrl : customQrUrl + "/") + "?table=" + selectedTableForQr)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="track-tab-btn"
+                    style={{ background: "var(--blush-pink)", color: "var(--dark-espresso)", padding: "8px 16px", borderRadius: "8px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
+                  >
+                    Download QR Code Only
+                  </a>
+                </div>
+              </div>
             </div>
           )}
 
