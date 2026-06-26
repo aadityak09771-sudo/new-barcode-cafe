@@ -8,6 +8,7 @@ import AdminPanel from "./components/AdminPanel";
 import { ShoppingCart, Sparkles, MapPin, Phone, Award, Shield, Calendar } from "lucide-react";
 import confetti from "canvas-confetti";
 import cafeHeroImg from "./assets/cafe_hero.jpg";
+import cafeLogo from "./assets/logo.jpg";
 
 export default function App() {
   const [cart, setCart] = useState([]);
@@ -287,8 +288,8 @@ export default function App() {
     <div className="app-container">
       {/* Navigation */}
       <nav className="app-nav">
-        <a href="#" className="nav-logo">
-          <span className="logo-barcode-icon">||| ||</span>
+        <a href="#" className="nav-logo" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img src={cafeLogo} alt="Barcode Cafe Logo" style={{ width: "36px", height: "36px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--pink-accent)" }} />
           <span>{CAFE_INFO.name}</span>
         </a>
 
@@ -436,8 +437,8 @@ export default function App() {
 
       {/* Footer */}
       <footer className="app-footer">
-        <div className="footer-logo">
-          <span className="text-green font-mono mr-1">|||</span>
+        <div className="footer-logo" style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+          <img src={cafeLogo} alt="Barcode Cafe Logo" style={{ width: "26px", height: "26px", borderRadius: "50%", objectFit: "cover" }} />
           <span>{CAFE_INFO.name}</span>
         </div>
         <p className="text-muted text-sm">© {new Date().getFullYear()} Barcode Cafe, Kanpur. We Serve Passion ☕</p>
