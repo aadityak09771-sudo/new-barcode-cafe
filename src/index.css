@@ -652,15 +652,19 @@ p {
   border: 1px solid var(--border-color);
   border-radius: 20px;
   box-shadow: var(--shadow-card);
-  transition: var(--transition);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.15), 
+              box-shadow 0.35s ease, 
+              border-color 0.35s ease;
   cursor: default;
   overflow: hidden;
 }
 
 .menu-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
+  transform: translateY(-8px) scale(1.015);
   border-color: var(--pink-accent);
+  box-shadow: 0 15px 30px rgba(226, 180, 166, 0.45), 
+              0 0 20px rgba(127, 139, 110, 0.28), 
+              inset 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .menu-card-img-wrapper {
@@ -1658,6 +1662,368 @@ p {
   border-color: var(--dark-espresso) !important;
   transform: translateY(-4px) scale(1.02) !important;
   box-shadow: var(--shadow-md) !important;
+}
+
+/* Mobile Bottom Navigation Bar Styles */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  /* Complete page horizontal overflow prevention */
+  html, body, .app-container {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Body padding to make space for bottom nav */
+  body {
+    padding-bottom: 85px !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
+    justify-content: space-around;
+    align-items: center;
+    z-index: 999;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 600;
+    gap: 3px;
+    text-decoration: none;
+    cursor: pointer;
+    flex: 1;
+    height: 100%;
+    transition: var(--transition);
+    font-family: var(--font-body);
+  }
+
+  .bottom-nav-item:active,
+  .bottom-nav-item:focus {
+    outline: none;
+  }
+  
+  .bottom-nav-item svg {
+    color: var(--text-muted);
+    transition: var(--transition);
+  }
+
+  .bottom-nav-item:hover,
+  .bottom-nav-item:hover svg {
+    color: var(--olive-accent);
+  }
+
+  .bottom-nav-cart-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-nav-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: var(--pink-accent);
+    color: var(--dark-espresso);
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 50%;
+    min-width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border: 1.5px solid var(--white-surface);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  /* Prevent ambient player components from overflowing on mobile */
+  .ambient-player-panel {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    margin: 20px 0 40px 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .player-meta {
+    flex-direction: row !important; /* Keep icon & title in a line */
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    text-align: left !important;
+    gap: 10px !important;
+  }
+
+  .player-meta h4 {
+    font-size: 0.95rem !important;
+  }
+
+  .player-meta span {
+    font-size: 0.7rem !important;
+    display: block !important;
+  }
+
+  .visualizer-wrapper {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 8px 0 !important;
+  }
+
+  /* Swipeable Track Selection Bar for Lofi/Acoustic */
+  .track-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 4px 2px 8px 2px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important; /* Hide scrollbar on Firefox */
+    -ms-overflow-style: none !important;  /* Hide scrollbar on IE/Edge */
+  }
+
+  .track-tabs::-webkit-scrollbar {
+    display: none !important; /* Hide scrollbar on Chrome/Safari */
+  }
+
+  .track-tab-btn {
+    flex: 0 0 auto !important; /* Prevent shrinking */
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Zomato-Style Horizontal Layout for Menu Items on Mobile */
+  .menu-grid {
+    grid-template-columns: 1fr !important; /* Single column */
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .menu-card:not(.editing-card) {
+    display: flex !important;
+    flex-direction: row-reverse !important; /* Image on right, text on left */
+    align-items: stretch !important;
+    padding: 12px !important;
+    gap: 12px !important;
+    min-height: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: var(--white-surface) !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-sm) !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Glowing Touch Hover Effect for Cards on Mobile */
+  .menu-card:not(.editing-card):hover,
+  .menu-card:not(.editing-card):active {
+    transform: translateY(-2px) !important;
+    border-color: var(--pink-accent) !important;
+    box-shadow: 0 8px 20px rgba(226, 180, 166, 0.4), 
+                0 0 12px rgba(127, 139, 110, 0.2) !important;
+  }
+
+  .menu-card:not(.editing-card) .menu-card-img-wrapper {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    aspect-ratio: 1/1 !important;
+  }
+
+  .menu-card:not(.editing-card) .menu-card-img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .menu-card:not(.editing-card) .menu-card-content {
+    flex: 1 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    overflow: hidden !important;
+  }
+
+  .menu-card:not(.editing-card) h3 {
+    font-size: 0.95rem !important;
+    margin-bottom: 2px !important;
+    font-weight: 600 !important;
+    color: var(--dark-espresso) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .menu-card:not(.editing-card) .description {
+    font-size: 0.72rem !important;
+    color: var(--text-muted) !important;
+    line-height: 1.3 !important;
+    margin-bottom: 8px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .menu-card:not(.editing-card) .menu-card-footer {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: auto !important;
+    width: 100% !important;
+  }
+
+  .price-tag {
+    font-size: 0.95rem !important;
+  }
+
+  .add-to-cart-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Make sure header spacing is correct */
+  .app-nav {
+    position: sticky !important;
+    top: 0;
+    background: rgba(255, 255, 255, 0.96) !important;
+    z-index: 998 !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.02) !important;
+  }
+
+  /* Hide raw cart buttons in header on mobile since we have it in bottom nav */
+  .nav-cart-btn {
+    display: none !important; 
+  }
+
+  /* Adjust scan discount button in header */
+  .nav-scan-btn {
+    padding: 8px 10px !important;
+  }
+
+  /* Info and Details Section Mobile Responsive Adjustments */
+  .info-card-pink,
+  .info-card-olive {
+    padding: 20px !important;
+    border-radius: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .info-card-pink h3,
+  .info-card-olive h3 {
+    font-size: 1.4rem !important;
+    margin-bottom: 20px !important;
+  }
+
+  .info-details-list {
+    gap: 18px !important;
+  }
+
+  .info-detail-item {
+    gap: 12px !important;
+  }
+
+  .reviews-carousel {
+    min-height: 220px !important;
+  }
+
+  .review-text {
+    font-size: 0.95rem !important;
+  }
+
+  .info-grid {
+    gap: 20px !important;
+  }
+
+  /* Partners card responsiveness */
+  .info-card-partners {
+    padding: 20px !important;
+    border-radius: 20px !important;
+    margin-top: 25px !important;
+  }
+  
+  .info-card-partners h3 {
+    font-size: 1.15rem !important;
+  }
+  
+  .partner-badge-btn {
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* Category Tabs Scrollbar Hiding & Styling */
+.category-tabs {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+@media (max-width: 900px) {
+  .category-tabs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .category-tab-btn {
+    flex: 0 0 auto !important;
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+    border-radius: 20px !important;
+  }
 }
 
 

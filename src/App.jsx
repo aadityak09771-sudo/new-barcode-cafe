@@ -5,7 +5,7 @@ import CartSidebar from "./components/CartSidebar";
 import CafeInfo from "./components/CafeInfo";
 import AmbientPlayer from "./components/AmbientPlayer";
 import AdminPanel from "./components/AdminPanel";
-import { ShoppingCart, Sparkles, MapPin, Phone, Award, Shield, Calendar } from "lucide-react";
+import { ShoppingCart, Sparkles, MapPin, Phone, Award, Shield, Calendar, Home, UtensilsCrossed, Image } from "lucide-react";
 import confetti from "canvas-confetti";
 import cafeHeroImg from "./assets/cafe_hero.jpg";
 import cafeLogo from "./assets/logo.jpg";
@@ -460,6 +460,35 @@ export default function App() {
           )}
         </p>
       </footer>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <div className="mobile-bottom-nav">
+        <a href="#hero" className="bottom-nav-item">
+          <Home size={20} />
+          <span>Home</span>
+        </a>
+        <a href="#menu" className="bottom-nav-item">
+          <UtensilsCrossed size={20} />
+          <span>Menu</span>
+        </a>
+        <a href="#info" className="bottom-nav-item">
+          <Image size={20} />
+          <span>Vibes</span>
+        </a>
+        <button className="bottom-nav-item" onClick={() => setIsCartOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+          <div className="bottom-nav-cart-wrapper">
+            <ShoppingCart size={20} />
+            {totalCartCount > 0 && (
+              <span className="bottom-nav-badge">{totalCartCount}</span>
+            )}
+          </div>
+          <span>Cart</span>
+        </button>
+        <button className="bottom-nav-item" onClick={() => setIsAdminOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+          <Shield size={20} />
+          <span>Admin</span>
+        </button>
+      </div>
     </div>
   );
 }

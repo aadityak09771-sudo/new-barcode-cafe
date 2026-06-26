@@ -3,6 +3,7 @@ import pastaImg from "./assets/pasta.jpg";
 import sandwichImg from "./assets/sandwich.jpg";
 import shakeImg from "./assets/shake.jpg";
 import coffeeImg from "./assets/coffee.jpg";
+import logoImg from "./assets/logo.jpg";
 
 export const CAFE_INFO = {
   name: "BARCODE CAFE",
@@ -157,6 +158,11 @@ export const MENU_ITEMS = [
 
 export const DEFAULT_GALLERY = [
   {
+    id: "vibe-logo",
+    image: logoImg,
+    caption: "Barcode Cafe Signature Logo"
+  },
+  {
     id: "vibe-1",
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
     caption: "Aesthetic Cafe Ambience & Cozy Seating"
@@ -187,4 +193,5 @@ export const DEFAULT_GALLERY = [
     caption: "Artisanal Decor & Soothing Vibe"
   }
 ];
+
 
